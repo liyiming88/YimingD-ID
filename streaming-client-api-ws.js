@@ -29,12 +29,6 @@ const idleVideoElement = document.getElementById('idle-video-element');
 const streamVideoElement = document.getElementById('stream-video-element');
 idleVideoElement.setAttribute('playsinline', '');
 streamVideoElement.setAttribute('playsinline', '');
-const peerStatusLabel = document.getElementById('peer-status-label');
-const iceStatusLabel = document.getElementById('ice-status-label');
-const iceGatheringStatusLabel = document.getElementById('ice-gathering-status-label');
-const signalingStatusLabel = document.getElementById('signaling-status-label');
-const streamingStatusLabel = document.getElementById('streaming-status-label');
-const streamEventLabel = document.getElementById('stream-event-label');
 
 const CONFIG = {
   API_KEY: 'sk-LtWfcckYXtlxF1pv5jWMaAfY533vpStRjfxlHRc1xBehGlws', // 替换为你的实际API密钥
@@ -168,7 +162,8 @@ submitButton.onclick = async () => {
       },
       body: JSON.stringify({
         model: CONFIG.MODEL,
-        messages: [{ role: 'system', content: "your output has no emoji please and to be brief. " }, ...messageHistory, { role: 'user', content: message }],
+        messages: [{ role: 'system', content: `your output has no emoji. And keep your words brief.
+          You are a professional AI customer service assistant, specializing in helping users with questions related to online pension withdrawal in UK.And keep your words brief.` }, ...messageHistory, { role: 'user', content: message }],
         temperature: CONFIG.TEMPERATURE
       })
     });
@@ -210,8 +205,6 @@ document.getElementById('userInput').addEventListener('keypress', (e) => {
 });
 
 function onIceGatheringStateChange() {
-  iceGatheringStatusLabel.innerText = peerConnection.iceGatheringState;
-  iceGatheringStatusLabel.className = 'iceGatheringState-' + peerConnection.iceGatheringState;
 }
 
 function onIceCandidate(event) {
@@ -239,8 +232,6 @@ function onIceCandidate(event) {
   }
 }
 function onIceConnectionStateChange() {
-  iceStatusLabel.innerText = peerConnection.iceConnectionState;
-  iceStatusLabel.className = 'iceConnectionState-' + peerConnection.iceConnectionState;
   if (peerConnection.iceConnectionState === 'failed' || peerConnection.iceConnectionState === 'closed') {
     stopAllStreams();
     closePC();
@@ -248,8 +239,6 @@ function onIceConnectionStateChange() {
 }
 function onConnectionStateChange() {
   // not supported in firefox
-  peerStatusLabel.innerText = peerConnection.connectionState;
-  peerStatusLabel.className = 'peerConnectionState-' + peerConnection.connectionState;
   console.log('peerConnection', peerConnection.connectionState);
 
   if (peerConnection.connectionState === 'connected') {
@@ -264,22 +253,20 @@ function onConnectionStateChange() {
       if (!isStreamReady) {
         console.log('forcing stream/ready');
         isStreamReady = true;
-        streamEventLabel.innerText = 'ready';
-        streamEventLabel.className = 'streamEvent-ready';
         // Avatar主动发起问候
         const username = document.getElementById('username').value || 'Guest';
+        const textToSpeech = document.getElementById('')
         const welcomeMessage = `Hello, ${username}, how can I assist you today?`;
         addMessageToChat('assistant', welcomeMessage);
         processTextAndSendMessages(welcomeMessage, ws);
       }
-    }, 1000);
+    }, 2000);
     
   }
 }
 
 function onSignalingStateChange() {
-  signalingStatusLabel.innerText = peerConnection.signalingState;
-  signalingStatusLabel.className = 'signalingState-' + peerConnection.signalingState;
+  
 }
 
 function onVideoStatusChange(videoIsPlaying, stream) {
@@ -297,8 +284,6 @@ function onVideoStatusChange(videoIsPlaying, stream) {
   streamVideoElement.style.opacity = streamVideoOpacity;
   idleVideoElement.style.opacity = 1 - streamVideoOpacity;
 
-  streamingStatusLabel.innerText = status;
-  streamingStatusLabel.className = 'streamingState-' + status;
 }
 
 function onTrack(event) {
@@ -366,13 +351,11 @@ function onStreamEvent(message) {
       setTimeout(() => {
         console.log('stream/ready');
         isStreamReady = true;
-        streamEventLabel.innerText = 'ready';
-        streamEventLabel.className = 'streamEvent-ready';
+       
       }, 1000);
     } else {
       console.log(event);
-      streamEventLabel.innerText = status === 'dont-care' ? event : status;
-      streamEventLabel.className = 'streamEvent-' + status;
+     
     }
   }
 }
@@ -446,11 +429,6 @@ function closePC(pc = peerConnection) {
   clearInterval(statsIntervalId);
   isStreamReady = !stream_warmup;
   streamVideoOpacity = 0;
-  iceGatheringStatusLabel.innerText = '';
-  signalingStatusLabel.innerText = '';
-  iceStatusLabel.innerText = '';
-  peerStatusLabel.innerText = '';
-  streamEventLabel.innerText = '';
   console.log('stopped peer connection');
   if (pc === peerConnection) {
     peerConnection = null;

@@ -78,7 +78,7 @@
       
       .chat-box {
         overflow-y: auto;
-        padding: 15px;
+        padding-top: 15px;
         margin-bottom: 15px;
         height: 200px; /* Set a fixed height for the chat box */
        
@@ -102,7 +102,8 @@
 
         .connection-message {
           text-align: center;
-          color: #333333;
+          color: #666666;
+          margin-bottom: 6px;
         }
       }
       
@@ -110,19 +111,19 @@
 </head>
 <body>
     <!-- 你的页面内容 -->
-    <h1>Connection Status Check</h1>
+    <h1>Withdraw your pensions</h1>
     <div id="status">
-        ICE gathering status: <label id="ice-gathering-status-label"></label><br />
+        <!-- ICE gathering status: <label id="ice-gathering-status-label"></label><br />
         ICE status: <label id="ice-status-label"></label><br />
         Peer connection status: <label id="peer-status-label"></label><br />
         Signaling status: <label id="signaling-status-label"></label><br />
         Last stream event: <label id="stream-event-label"></label><br />
-        Streaming status: <label id="streaming-status-label"></label><br />
+        Streaming status: <label id="streaming-status-label"></label><br /> -->
       </div>
       <div>
-        <p>username</p>
+        <p>Account Name:</p>
         <input type="text" id="username"  placeholder="username..." style="width: 150px" autocomplete="off">
-    </div>
+      </div>
     <!-- 客服按钮 -->
     <button id="chat-button">Contact Support</button>
 
@@ -144,7 +145,7 @@
         </div>
         <div class="chat-input">
             <input type="text" id="userInput"  placeholder="text..." style="width: 70%" autocomplete="off">
-            <button id="submit-button">Send</button>
+            <button id="submit-button" style="background-color: #4CAF50; border: none; padding: 3px; color: white; border-radius: 2px;">Send</button>
         </div>
     </div>
 
