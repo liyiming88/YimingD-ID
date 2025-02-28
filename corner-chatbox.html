@@ -37,6 +37,7 @@
             flex: 1;
             padding: 15px;
             height: 300px;
+            font-size: small;
         }
 
         /* 输入区域 */
@@ -81,7 +82,25 @@
         margin-bottom: 15px;
         height: 200px; /* Set a fixed height for the chat box */
        
+        .message {
+          margin: 5px 0;
+          padding: 10px;
+          border-radius: 5px;
+          display: inline-block;
+          max-width: 80%;
+        }
+
+        .user-message {
+          background-color: #dcf8c6;
+          float: right;
+        }
+
+        .assistant-message {
+          background-color: #f1f0f0;
+          float: left;
+        }
       }
+      
     </style>
 </head>
 <body>
