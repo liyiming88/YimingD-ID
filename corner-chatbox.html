@@ -102,7 +102,7 @@
 
         .connection-message {
           text-align: center;
-          color: #666666;
+          color: #333333;
         }
       }
       
@@ -110,7 +110,7 @@
 </head>
 <body>
     <!-- 你的页面内容 -->
-    <h1>欢迎来到我的网站</h1>
+    <h1>Connection Status Check</h1>
     <div id="status">
         ICE gathering status: <label id="ice-gathering-status-label"></label><br />
         ICE status: <label id="ice-status-label"></label><br />
@@ -119,8 +119,12 @@
         Last stream event: <label id="stream-event-label"></label><br />
         Streaming status: <label id="streaming-status-label"></label><br />
       </div>
+      <div>
+        <p>username</p>
+        <input type="text" id="username"  placeholder="username..." style="width: 150px" autocomplete="off">
+    </div>
     <!-- 客服按钮 -->
-    <button id="chat-button">咨询客服</button>
+    <button id="chat-button">Contact Support</button>
 
     <!-- 聊天窗口 -->
     <div id="chat-window">
@@ -139,8 +143,8 @@
             </div>
         </div>
         <div class="chat-input">
-            <input type="text" id="userInput"  placeholder="输入消息..." style="width: 70%">
-            <button id="submit-button">发送</button>
+            <input type="text" id="userInput"  placeholder="text..." style="width: 70%" autocomplete="off">
+            <button id="submit-button">Send</button>
         </div>
     </div>
 

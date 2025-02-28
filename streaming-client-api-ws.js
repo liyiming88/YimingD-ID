@@ -178,48 +178,14 @@ submitButton.onclick = async () => {
     }
 
     const data = await response.json();
-    const reply = data.choices[0].message.content;
+    const text = data.choices[0].message.content;
 
-    const text = reply;
-    const chunks = text.split(' ');
-
-    // Indicates end of text stream
-    chunks.push('');
-
-    for (const [_, chunk] of chunks.entries()) {
-      const streamMessage = {
-        type: 'stream-text',
-        payload: {
-          script: {
-            type: 'text',
-            input: chunk,
-            provider: {
-              type: 'microsoft',
-              voice_id: 'en-US-JennyNeural ',
-            },
-            ssml: true,
-          },
-          config: {
-            stitch: true,
-          },
-          apiKeysExternal: {
-            elevenlabs: { key: '' },
-          },
-          background: {
-            color: '#FFFFFF',
-          },
-          session_id: sessionId,
-          stream_id: streamId,
-          presenter_type: PRESENTER_TYPE,
-        },
-      };
-      sendMessage(ws, streamMessage);
-    }
+    processTextAndSendMessages(text, ws);
     
-    addMessageToChat('assistant', reply);
+    addMessageToChat('assistant', text);
     messageHistory.push(
       { role: 'user', content: message },
-      { role: 'assistant', content: reply }
+      { role: 'assistant', content: text }
     );
   } catch (error) {
     addMessageToChat('system', `错误: ${error.message}`);
@@ -289,6 +255,7 @@ function onConnectionStateChange() {
   if (peerConnection.connectionState === 'connected') {
     playIdleVideo();
     updateConnectionStatus();
+    
     /**
      * A fallback mechanism: if the 'stream/ready' event isn't received within 5 seconds after asking for stream warmup,
      * it updates the UI to indicate that the system is ready to start streaming data.
@@ -299,10 +266,17 @@ function onConnectionStateChange() {
         isStreamReady = true;
         streamEventLabel.innerText = 'ready';
         streamEventLabel.className = 'streamEvent-ready';
+        // Avatar主动发起问候
+        const username = document.getElementById('username').value || 'Guest';
+        const welcomeMessage = `Hello, ${username}, how can I assist you today?`;
+        addMessageToChat('assistant', welcomeMessage);
+        processTextAndSendMessages(welcomeMessage, ws);
       }
-    }, 5000);
+    }, 1000);
+    
   }
 }
+
 function onSignalingStateChange() {
   signalingStatusLabel.innerText = peerConnection.signalingState;
   signalingStatusLabel.className = 'signalingState-' + peerConnection.signalingState;
@@ -529,5 +503,42 @@ function updateConnectionStatus() {
   const connectionStatusElement = document.getElementById('connectionStatus');
   if (connectionStatusElement) {
     connectionStatusElement.textContent = 'Start to chat with AI assistant';
+  }
+}
+
+function processTextAndSendMessages(text, ws) {
+  const chunks = text.split(' ');
+
+  // Indicates end of text stream
+  chunks.push('');
+
+  for (const [_, chunk] of chunks.entries()) {
+    const streamMessage = {
+      type: 'stream-text',
+      payload: {
+        script: {
+          type: 'text',
+          input: chunk,
+          provider: {
+            type: 'microsoft',
+            voice_id: 'en-US-JennyNeural ',
+          },
+          ssml: true,
+        },
+        config: {
+          stitch: true,
+        },
+        apiKeysExternal: {
+          elevenlabs: { key: '' },
+        },
+        background: {
+          color: '#FFFFFF',
+        },
+        session_id: sessionId,
+        stream_id: streamId,
+        presenter_type: PRESENTER_TYPE,
+      },
+    };
+    sendMessage(ws, streamMessage);
   }
 }
