@@ -155,7 +155,6 @@ submitButton.onclick = async () => {
   const message = input.value.trim();
   if (!message) return;
 
-  // showLoading(true);
   addMessageToChat('user', message);
   input.value = '';
 
@@ -224,8 +223,6 @@ submitButton.onclick = async () => {
     );
   } catch (error) {
     addMessageToChat('system', `错误: ${error.message}`);
-  } finally {
-    // showLoading(false);
   }
 };
 
@@ -291,6 +288,7 @@ function onConnectionStateChange() {
 
   if (peerConnection.connectionState === 'connected') {
     playIdleVideo();
+    updateConnectionStatus();
     /**
      * A fallback mechanism: if the 'stream/ready' event isn't received within 5 seconds after asking for stream warmup,
      * it updates the UI to indicate that the system is ready to start streaming data.
@@ -525,4 +523,11 @@ function getChunk(arrayBuffer, chunkIndex, totalChunks, chunkSize) {
   const start = chunkIndex * chunkSize;
   const end = Math.min(start + chunkSize, arrayBuffer.byteLength);
   return new Uint8Array(arrayBuffer.slice(start, end));
+}
+
+function updateConnectionStatus() {
+  const connectionStatusElement = document.getElementById('connectionStatus');
+  if (connectionStatusElement) {
+    connectionStatusElement.textContent = 'Start to chat with AI assistant';
+  }
 }

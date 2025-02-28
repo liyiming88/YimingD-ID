@@ -99,6 +99,11 @@
           background-color: #f1f0f0;
           float: left;
         }
+
+        .connection-message {
+          text-align: center;
+          color: #666666;
+        }
       }
       
     </style>
@@ -127,7 +132,11 @@
                   <video id="stream-video-element" width="100" height="100" autoplay style="opacity: 0"></video>
                 </div>
             </div>
-            <div class="chat-box" id="chatBox"></div>
+            <div class="chat-box" id="chatBox">
+              <div id="connectionStatus" class="connection-message">
+                Connecting...
+            </div>
+            </div>
         </div>
         <div class="chat-input">
             <input type="text" id="userInput"  placeholder="输入消息..." style="width: 70%">
