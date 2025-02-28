@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* 客服按钮样式 */
+        #chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* 聊天窗口样式 */
+        #chat-window {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        /* 聊天窗口内容区域 */
+        .chat-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        /* 输入区域 */
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* 显示聊天窗口时添加的类 */
+        .visible {
+            display: flex !important;
+        }
+
+        #video-wrapper {
+        background: url(bg.png);
+        height: 120px;
+        background-position: top;
+      }
+
+      #video-wrapper div {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*border:1px solid;*/
+        border-radius: 50%;
+        background-color: #fff;
+      }
+      
+      .chat-box {
+        overflow-y: auto;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+    </style>
+</head>
+<body>
+    <!-- 你的页面内容 -->
+    <h1>欢迎来到我的网站</h1>
+    <div id="status">
+        ICE gathering status: <label id="ice-gathering-status-label"></label><br />
+        ICE status: <label id="ice-status-label"></label><br />
+        Peer connection status: <label id="peer-status-label"></label><br />
+        Signaling status: <label id="signaling-status-label"></label><br />
+        Last stream event: <label id="stream-event-label"></label><br />
+        Streaming status: <label id="streaming-status-label"></label><br />
+      </div>
+    <!-- 客服按钮 -->
+    <button id="chat-button">咨询客服</button>
+
+    <!-- 聊天窗口 -->
+    <div id="chat-window">
+        <div class="chat-content">
+            <!-- 这里可以放置聊天记录 -->
+            <div id="video-wrapper">
+                <div>
+                  <video id="idle-video-element" width="100" height="100" autoplay loop style="opacity: 1"></video>
+                  <video id="stream-video-element" width="100" height="100" autoplay style="opacity: 0"></video>
+                </div>
+            </div>
+            <div class="chat-box" id="chatBox"></div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput"  placeholder="输入消息..." style="width: 70%">
+            <button id="submit-button">发送</button>
+        </div>
+    </div>
+
+    <script type="module" src="./streaming-client-api-ws.js"></script>
+</body>
+</html>

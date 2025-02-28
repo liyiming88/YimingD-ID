@@ -1,0 +1,6 @@
+{
+  "key": "cGF0cmlja2xpMTIzYXNkQGdtYWlsLmNvbQ:dTXRE7rjfbQPQRH2v35bo",
+  "url": "https://api.d-id.com",
+  "websocketUrl": "wss://ws-api.d-id.com",
+  "service": "talks"
+}

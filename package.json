@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "axios": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "openai": "^4.85.4",
+    "ws": "^8.18.0"
+  },
+  "scripts": {
+    "dev": "node app.js"
+  }
+}
