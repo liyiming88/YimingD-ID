@@ -1,3 +1,6 @@
+<img width="1174" alt="image" src="https://github.com/user-attachments/assets/ea562c19-c549-403e-b77e-377f88e582a9" />
+
+
 # Streaming Live Demo by D-ID
 
 - (install express) Open a terminal in the folder and run - `npm install express`, `npm install cors`
