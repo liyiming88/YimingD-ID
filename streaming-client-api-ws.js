@@ -374,7 +374,7 @@ async function createPeerConnection(offer, iceServers) {
   }
 
   await peerConnection.setRemoteDescription(offer);
-  console.log('set remote sdp OK');
+  console.log('set remote sdp OK.');
 
   const sessionClientAnswer = await peerConnection.createAnswer();
   console.log('create local sdp OK');
