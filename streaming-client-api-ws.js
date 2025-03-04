@@ -57,22 +57,28 @@ let messageHistory = [];
 
 const chatButton = document.getElementById('chat-button');
 
-chatButton.onclick = () => {
-  const chatWindow = document.getElementById('chat-window');
-  chatWindow.classList.toggle('visible');
-}
+// chatButton.onclick = () => {
+//   const chatWindow = document.getElementById('chat-window');
+//   chatWindow.classList.toggle('visible');
+// }
 
 // 点击窗口外部区域关闭聊天窗口
-document.addEventListener('click', function(event) {
-  const chatWindow = document.getElementById('chat-window');
-  const chatButton = document.getElementById('chat-button');
+// document.addEventListener('click', function(event) {
+//   const chatWindow = document.getElementById('chat-window');
+//   const chatButton = document.getElementById('chat-button');
   
-  if (!chatWindow.contains(event.target) && !chatButton.contains(event.target)) {
-      chatWindow.classList.remove('visible');
-  } else {
-    setupStream()
-  }
-});
+//   if (!chatWindow.contains(event.target) && !chatButton.contains(event.target)) {
+//       chatWindow.classList.remove('visible');
+//   } else {
+//     setupStream()
+//   }
+// });
+
+// 2秒后执行setupStream()函数
+setTimeout(() => {
+  setupStream();
+}
+, 2000);
 
 // 创建WebSocket连接，创建WebRTC连接
 async function setupStream() {
@@ -140,69 +146,18 @@ async function setupStream() {
   }
 }
 
-//获取send 按钮
-const submitButton = document.getElementById('submit-button');
-
-//定义点击send按钮之后的逻辑
-submitButton.onclick = async () => {
-  const input = document.getElementById('userInput');
-  const message = input.value.trim();
-  if (!message) return;
-
-  addMessageToChat('user', message);
-  input.value = '';
-
-  try {
-    console.log('Sending message:', message);
-    const response = await fetch(CONFIG.API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CONFIG.API_KEY}`
-      },
-      body: JSON.stringify({
-        model: CONFIG.MODEL,
-        messages: [{ role: 'system', content: `your output has no emoji please and to be brief.
-          You are a professional AI customer service assistant, specializing in helping users with questions related to online pension withdrawal. Your task is to provide clear and accurate information to assist users in successfully completing their pension withdrawal process. ` }, ...messageHistory, { role: 'user', content: message }],
-        temperature: CONFIG.TEMPERATURE
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`API请求失败: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const text = data.choices[0].message.content;
-
-    processTextAndSendMessages(text, ws);
-    
-    addMessageToChat('assistant', text);
-    messageHistory.push(
-      { role: 'user', content: message },
-      { role: 'assistant', content: text }
-    );
-  } catch (error) {
-    addMessageToChat('system', `错误: ${error.message}`);
-  }
-};
-
-//把消息附加到对话框中
+// Replace message content in the chat box
 function addMessageToChat(role, content) {
   const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML = ''; // Clear existing messages
+
   const messageDiv = document.createElement('div');
-  
   messageDiv.className = `message ${role}-message`;
   messageDiv.textContent = content;
-  
+
   chatBox.appendChild(messageDiv);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
-
-// 绑定回车键事件
-document.getElementById('userInput').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') submitButton.onclick();
-});
 
 function onIceGatheringStateChange() {
 }
@@ -243,7 +198,6 @@ function onConnectionStateChange() {
 
   if (peerConnection.connectionState === 'connected') {
     playIdleVideo();
-    updateConnectionStatus();
     
     /**
      * A fallback mechanism: if the 'stream/ready' event isn't received within 5 seconds after asking for stream warmup,
@@ -254,11 +208,11 @@ function onConnectionStateChange() {
         console.log('forcing stream/ready');
         isStreamReady = true;
         // Avatar主动发起问候
-        const username = document.getElementById('username').value || 'Guest';
-        const textToSpeech = document.getElementById('')
-        const welcomeMessage = `Hello, ${username}, how can I assist you today?`;
-        addMessageToChat('assistant', welcomeMessage);
-        processTextAndSendMessages(welcomeMessage, ws);
+        // const username = document.getElementById('username').value || 'Guest';
+        // const textToSpeech = document.getElementById('')
+        // const welcomeMessage = `Hello, ${username}, how can I assist you today?`;
+        // addMessageToChat('assistant', welcomeMessage);
+        // processTextAndSendMessages(welcomeMessage, ws);
       }
     }, 2000);
     
@@ -477,12 +431,6 @@ function getChunk(arrayBuffer, chunkIndex, totalChunks, chunkSize) {
   return new Uint8Array(arrayBuffer.slice(start, end));
 }
 
-function updateConnectionStatus() {
-  const connectionStatusElement = document.getElementById('connectionStatus');
-  if (connectionStatusElement) {
-    connectionStatusElement.textContent = 'Start to chat with AI assistant';
-  }
-}
 
 function processTextAndSendMessages(text, ws) {
   const chunks = text.split(' ');
@@ -520,3 +468,27 @@ function processTextAndSendMessages(text, ws) {
     sendMessage(ws, streamMessage);
   }
 }
+
+const links = document.querySelectorAll('a');
+let firstClick = true;
+
+
+// 为每个a标签添加onclick事件
+links.forEach(link => {
+    link.onclick = function() {
+      const chatWindow = document.getElementById('chat-window');
+      chatWindow.classList.add('visible');
+      const info = link.getAttribute('data-info');
+        if (firstClick) {
+            const username = document.getElementById('username').value || 'Guest';
+            const message = `Hello ${username}, let me explain to you! ${info}`
+            console.log(message);
+            processTextAndSendMessages(message, ws);
+            addMessageToChat('assistant', message);
+            firstClick = false;
+        } else {
+          processTextAndSendMessages(info, ws);
+          addMessageToChat('assistant', info);
+        }
+    };
+});

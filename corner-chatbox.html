@@ -22,7 +22,7 @@
             bottom: 70px;
             right: 20px;
             width: 300px;
-            height: 400px;
+            height: 300px;
             background-color: white;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -53,6 +53,24 @@
             display: flex !important;
         }
 
+        /* 关闭按钮样式 */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 25px;
+            z-index: 1001; /* Ensure the close button is on top */
+        }
+
         #video-wrapper {
         background: url(bg.png);
         height: 120px;
@@ -80,14 +98,14 @@
         overflow-y: auto;
         padding-top: 15px;
         margin-bottom: 15px;
-        height: 200px; /* Set a fixed height for the chat box */
+        height: 120px; /* Set a fixed height for the chat box */
        
         .message {
           margin: 5px 0;
           padding: 10px;
           border-radius: 5px;
           display: inline-block;
-          max-width: 80%;
+          max-width: 100%;
         }
 
         .user-message {
@@ -97,7 +115,7 @@
 
         .assistant-message {
           background-color: #f1f0f0;
-          float: left;
+          float: center;
         }
 
         .connection-message {
@@ -124,11 +142,21 @@
         <p>Account Name:</p>
         <input type="text" id="username"  placeholder="username..." style="width: 150px" autocomplete="off">
       </div>
-    <!-- 客服按钮 -->
-    <button id="chat-button">Contact Support</button>
+      <div>
+        
+        
+        
+      </div>
+
+    <div style="margin-left: 100px; margin-right: 100px;">
+        <h3>Do you know..</h3>
+        <p>In UK pension planning, terms like <a href="#ufpls" id="ufpls-link" data-info="UFPLS stands for Uncrystallised Funds Pension Lump Sum. It is a method of accessing money purchase pension funds in the UK without entering into drawdown or buying an annuity.">UFPLS</a>, <a href="#crystallised" id="crystallised-link" data-info="crystallised refers to pension funds that have been accessed or designated for specific benefits.">Crystallised</a>, and <a href="#uncrystallised" id="uncrystallised-link" data-info="Uncrystallised refers to pension funds or assets that have not yet been accessed or designated for specific benefits.">Uncrystallised</a> dictate retirement income strategies. UFPLS allows withdrawals directly from uncrystallised funds (not yet committed to drawdown/annuities), offering 25% tax-free and 75% taxable. Once funds are crystallised (e.g., allocated to drawdown or annuities), they lose flexibility and cannot be used for UFPLS.</p>
+        <p>Strategic use is vital: excessive UFPLS withdrawals may increase tax liability, while crystallising too early limits future options. Balancing uncrystallised and crystallised funds optimizes tax efficiency and financial flexibility.</p>
+    </div>
 
     <!-- 聊天窗口 -->
     <div id="chat-window">
+        <button class="close-button" onclick="closeChatWindow()">×</button>
         <div class="chat-content">
             <!-- 这里可以放置聊天记录 -->
             <div id="video-wrapper">
@@ -138,17 +166,16 @@
                 </div>
             </div>
             <div class="chat-box" id="chatBox">
-              <div id="connectionStatus" class="connection-message">
-                Connecting...
+              
             </div>
-            </div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="userInput"  placeholder="text..." style="width: 70%" autocomplete="off">
-            <button id="submit-button" style="background-color: #4CAF50; border: none; padding: 3px; color: white; border-radius: 2px;">Send</button>
         </div>
     </div>
 
     <script type="module" src="./streaming-client-api-ws.js"></script>
+    <script>
+        function closeChatWindow() {
+            document.getElementById('chat-window').classList.remove('visible');
+        }
+    </script>
 </body>
 </html>
