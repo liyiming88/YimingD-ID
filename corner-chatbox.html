@@ -18,9 +18,7 @@
 
         /* 聊天窗口样式 */
         #chat-window {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
+            position: absolute; /* Changed from fixed to absolute */
             width: 300px;
             height: 300px;
             background-color: white;
@@ -92,6 +90,7 @@
         /*border:1px solid;*/
         border-radius: 50%;
         background-color: #fff;
+        transition: opacity 0.2s ease-in-out; /* Add transition for fade effect */
       }
       
       .chat-box {
@@ -126,6 +125,7 @@
       }
       
     </style>
+    <link rel="stylesheet" href="withdrawal.css">
 </head>
 <body>
     <!-- 你的页面内容 -->
@@ -147,10 +147,55 @@
         
         
       </div>
+    <div class="container">
+        <div class="account-value">
+            <span>Your total account value: £100,000.00</span>
+        </div>
 
-    <div style="margin-left: 100px; margin-right: 100px;">
+        <div class="info-box">
+            <div class="info-icon">ℹ️</div>
+            <p>You can use this online service to take out a  <a href="#ufpls" id="ufpls-link" 
+              data-info="Single lump sum is a one-time tax-free withdrawal of up to 25% of your pension savings, capped at £268,275, taken in a single payment rather than installments ">single lump sum</a> from your pension. If you want to set up a regular pension withdrawal, please call us on 0800 3 68 68 68.</p>
+        </div>
+
+        <div class="main-content">
+            <h1>Setting up your withdrawal</h1>
+            
+            <section>
+                <h2>Before you start</h2>
+                <ul>
+                    <li>
+                        <p>We've sent you a <a href="#ufpls" data-info="Retirement Pack is the pension provider’s pre-retirement mailing that sets out your pot’s value, tax-free cash, annuity, drawdown and next-step forms.">Retirement Pack</a> with the heading 'Helping you plan for your retirement', which outlines options you need to consider when taking money out of your pension. Please read this and bear in mind that your circumstances may have changed over time. If your letter is more than 12 months old, you'll need to request an up-to-date version. Please call us on 0800 3 68 68 68 to request your new letter.</p>
+                    </li>
+                    <li>
+                        <p>Check that your personal details are up to date on your account to avoid any delay in processing your withdrawal request. To help protect you and Fidelity against financial crime, we need to verify your identity and run an electronic check on the bank account you'll be receiving the funds into. During these checks, we use a credit reference agency to validate your details. It leaves a soft footprint on your credit file, which means it's visible to you and us but no other parties. This will not have any impact on your credit rating.</p>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>What to expect once you begin</h2>
+                <ul>
+                    <li>
+                        <p>You'll need to read some important information and answer some questions. These are in place to help you consider and understand the impact that a withdrawal will make on your future retirement income.</p>
+                    </li>
+                    <li>
+                        <p>Tell us how much you want to take out. We'll then show you the tax you'll need to pay if any is due.</p>
+                    </li>
+                    <li>
+                        <p>Decide what you want to do with any money left after your withdrawal. You can choose another investment option or leave it where it is in your account.</p>
+                    </li>
+                    <li>
+                        <p>Download and review your 'Illustration' - this a personalised summary of the choices you've made regarding your withdrawal request.</p>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <div style="margin-left: 100px; margin-right: 400px;">
         <h3>Do you know..</h3>
-        <p>In UK pension planning, terms like <a href="#ufpls" id="ufpls-link" data-info="UFPLS stands for Uncrystallised Funds Pension Lump Sum. It is a method of accessing money purchase pension funds in the UK without entering into drawdown or buying an annuity.">UFPLS</a>, <a href="#crystallised" id="crystallised-link" data-info="crystallised refers to pension funds that have been accessed or designated for specific benefits.">Crystallised</a>, and <a href="#uncrystallised" id="uncrystallised-link" data-info="Uncrystallised refers to pension funds or assets that have not yet been accessed or designated for specific benefits.">Uncrystallised</a> dictate retirement income strategies. UFPLS allows withdrawals directly from uncrystallised funds (not yet committed to drawdown/annuities), offering 25% tax-free and 75% taxable. Once funds are crystallised (e.g., allocated to drawdown or annuities), they lose flexibility and cannot be used for UFPLS.</p>
+        <p>In UK pension planning, terms like <a href="#ufpls" id="ufpls-link" data-info="UFPLS stands for Uncrystallised Funds Pension Lump Sum. It is a method of accessing money purchase pension funds in the UK without entering into drawdown or buying an annuity.">UFPLS</a>, <a href="#crystallised" id="crystallised-link" data-info="Crystallised refers to pension funds that have been accessed or designated for specific benefits.">Crystallised</a>, and <a href="#uncrystallised" id="uncrystallised-link" data-info="Uncrystallised refers to pension funds or assets that have not yet been accessed or designated for specific benefits.">Uncrystallised</a> dictate retirement income strategies. UFPLS allows withdrawals directly from uncrystallised funds (not yet committed to drawdown/annuities), offering 25% tax-free and 75% taxable. Once funds are crystallised (e.g., allocated to drawdown or annuities), they lose flexibility and cannot be used for UFPLS.</p>
         <p>Strategic use is vital: excessive UFPLS withdrawals may increase tax liability, while crystallising too early limits future options. Balancing uncrystallised and crystallised funds optimizes tax efficiency and financial flexibility.</p>
     </div>
 
@@ -176,6 +221,17 @@
         function closeChatWindow() {
             document.getElementById('chat-window').classList.remove('visible');
         }
+
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const chatWindow = document.getElementById('chat-window');
+                const rect = this.getBoundingClientRect();
+                chatWindow.style.top = `${rect.bottom + window.scrollY}px`;
+                chatWindow.style.left = `${rect.left + window.scrollX}px`;
+                chatWindow.classList.add('visible');
+            });
+        });
     </script>
 </body>
 </html>
