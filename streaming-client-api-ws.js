@@ -481,7 +481,7 @@ links.forEach(link => {
       const info = link.getAttribute('data-info');
         if (firstClick) {
             const username = document.getElementById('username').value || 'Guest';
-            const message = `Hello ${username}, let me explain to you! ${info}`
+            const message = `      Hello ${username}, I am delighted to explain the terms you are interested in. ${info}`
             console.log(message);
             processTextAndSendMessages(message, ws);
             addMessageToChat('assistant', message);

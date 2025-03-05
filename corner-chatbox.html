@@ -18,9 +18,7 @@
 
         /* 聊天窗口样式 */
         #chat-window {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
+            position: absolute; /* Changed from fixed to absolute */
             width: 300px;
             height: 300px;
             background-color: white;
@@ -92,6 +90,7 @@
         /*border:1px solid;*/
         border-radius: 50%;
         background-color: #fff;
+        transition: opacity 0.2s ease-in-out; /* Add transition for fade effect */
       }
       
       .chat-box {
@@ -148,9 +147,9 @@
         
       </div>
 
-    <div style="margin-left: 100px; margin-right: 100px;">
+    <div style="margin-left: 100px; margin-right: 400px;">
         <h3>Do you know..</h3>
-        <p>In UK pension planning, terms like <a href="#ufpls" id="ufpls-link" data-info="UFPLS stands for Uncrystallised Funds Pension Lump Sum. It is a method of accessing money purchase pension funds in the UK without entering into drawdown or buying an annuity.">UFPLS</a>, <a href="#crystallised" id="crystallised-link" data-info="crystallised refers to pension funds that have been accessed or designated for specific benefits.">Crystallised</a>, and <a href="#uncrystallised" id="uncrystallised-link" data-info="Uncrystallised refers to pension funds or assets that have not yet been accessed or designated for specific benefits.">Uncrystallised</a> dictate retirement income strategies. UFPLS allows withdrawals directly from uncrystallised funds (not yet committed to drawdown/annuities), offering 25% tax-free and 75% taxable. Once funds are crystallised (e.g., allocated to drawdown or annuities), they lose flexibility and cannot be used for UFPLS.</p>
+        <p>In UK pension planning, terms like <a href="#ufpls" id="ufpls-link" data-info="UFPLS stands for Uncrystallised Funds Pension Lump Sum. It is a method of accessing money purchase pension funds in the UK without entering into drawdown or buying an annuity.">UFPLS</a>, <a href="#crystallised" id="crystallised-link" data-info="Crystallised refers to pension funds that have been accessed or designated for specific benefits.">Crystallised</a>, and <a href="#uncrystallised" id="uncrystallised-link" data-info="Uncrystallised refers to pension funds or assets that have not yet been accessed or designated for specific benefits.">Uncrystallised</a> dictate retirement income strategies. UFPLS allows withdrawals directly from uncrystallised funds (not yet committed to drawdown/annuities), offering 25% tax-free and 75% taxable. Once funds are crystallised (e.g., allocated to drawdown or annuities), they lose flexibility and cannot be used for UFPLS.</p>
         <p>Strategic use is vital: excessive UFPLS withdrawals may increase tax liability, while crystallising too early limits future options. Balancing uncrystallised and crystallised funds optimizes tax efficiency and financial flexibility.</p>
     </div>
 
@@ -176,6 +175,17 @@
         function closeChatWindow() {
             document.getElementById('chat-window').classList.remove('visible');
         }
+
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const chatWindow = document.getElementById('chat-window');
+                const rect = this.getBoundingClientRect();
+                chatWindow.style.top = `${rect.bottom + window.scrollY}px`;
+                chatWindow.style.left = `${rect.left + window.scrollX}px`;
+                chatWindow.classList.add('visible');
+            });
+        });
     </script>
 </body>
 </html>
